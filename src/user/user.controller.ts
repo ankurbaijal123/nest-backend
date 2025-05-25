@@ -17,7 +17,7 @@ export class UserController{
     }
 
     @Post()
-    storeUser(@Body() createUserDTO: UpdateUserDTO){
+    storeUser(@Body() createUserDTO: CreateUserDTO){
         
         return this.userService.createUser(createUserDTO);
     }
@@ -26,8 +26,8 @@ export class UserController{
         return this.userService.getUser(param)
     }
     @Patch('/:userId')
-    update(@Body() createUserDTO : CreateUserDTO, @Param() param: {userId: number}){
-        return this.userService.updateUser(createUserDTO, param)
+    update(@Body() updateUserDTO : UpdateUserDTO, @Param() param: {userId: number}){
+        return this.userService.updateUser(updateUserDTO, param)
     }
 
     
