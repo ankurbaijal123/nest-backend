@@ -1,35 +1,38 @@
 
-import { Controller, Get, Post, Req, Param, Delete, Patch } from "@nestjs/common";
+import { Controller, Get, Post, Req, Param, Delete, Patch, Body } from "@nestjs/common";
 import {Request} from 'express'
+import { UserService } from "./user.service";
+import { UpdateUserDTO } from "./update-user.dto";
+import { CreateUserDTO } from "./create-user.dto";
 
 @Controller('/user')
 
 
 export class UserController{
+    constructor (private userService : UserService) {}
+
     @Get()
     getUsers(){  
-    return "i am user";
+        return this.userService.get();
     }
 
     @Post()
-    storeUser(@Req() req: Request){
-        console.log(req.body)
-        return req.body;
+    storeUser(@Body() createUserDTO: UpdateUserDTO){
+        
+        return this.userService.createUser(createUserDTO);
     }
     @Get('/:userId')
-    getUser(@Param() userId: number){
-        return userId
+    getUser(@Param() param :{userId: number}){
+        return this.userService.getUser(param)
     }
     @Patch('/:userId')
-    updateUser(@Req() req: Request, @Param() userId: number){
-        console.log(req.body)
-        req.body.emailId = "ankurbaijal@gamil.com"
-        return req.body;
+    update(@Body() createUserDTO : CreateUserDTO, @Param() param: {userId: number}){
+        return this.userService.updateUser(createUserDTO, param)
     }
 
     
     @Delete('/:userId')
-    deleteUser(@Param() userId: number){
-        return JSON.stringify(userId) + "deleted"
+    deleteUser(@Param() param : {userId: number}){
+        return this.userService.deleteUser(param)
     }
 }
